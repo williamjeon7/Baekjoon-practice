@@ -1,0 +1,56 @@
+import sys
+
+
+def state_chk(dic: dict, x: int, y: int):
+    tmp = 0
+
+    for key, value in dic.items():
+        if key >= x:
+            tmp += x*value
+        elif key < x:
+            tmp += key*value
+
+    if tmp*2 >= y:
+        return 1
+    else:
+        return 0
+
+
+n = int(sys.stdin.readline().rstrip())
+num_dic = {}
+
+for i in range(n):
+    num_list = list(map(int, sys.stdin.readline().split()))
+
+    for j in range(n):
+        if num_list[j] not in num_dic:
+            num_dic[num_list[j]] = 1
+        else:
+            num_dic[num_list[j]] += 1
+
+sum_com = 0
+cur_com = 0
+
+
+for key, value in num_dic.items():
+    sum_com += key*value
+
+top = sum_com//2
+bottom = 0
+ans = (top+bottom)//2
+
+while True:
+    if state_chk(num_dic, ans, sum_com) == 1:
+        top = ans
+
+    elif state_chk(num_dic, ans, sum_com) == 0:
+        bottom = ans+1
+
+    ans = (top + bottom)//2
+
+    if state_chk(num_dic, bottom, sum_com) == 1:
+        ans = bottom
+        break
+
+print(ans)
+
